@@ -14,7 +14,7 @@ jobs:
       run: |
         cat /etc/hosts
         ip link show
-        lsof -i
+        lsof -i 2>&1
     - name: Install dependencies
       run: bundle install
     - name: Run Rubocop
