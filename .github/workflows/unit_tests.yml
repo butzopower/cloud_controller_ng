@@ -12,9 +12,6 @@ jobs:
     steps:
     - name: Sanity check
       run: |
-        cat /etc/hosts
-        ip link show
-        echo "check ip local port range"
         sysctl -A | grep ip_local_port_range 
     - name: Install dependencies
       run: bundle install
