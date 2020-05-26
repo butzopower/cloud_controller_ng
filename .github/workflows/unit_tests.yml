@@ -10,6 +10,10 @@ jobs:
     container:
       image: "cloudfoundry/capi:ruby-units"
     steps:
+    - name: Sanity check
+      run: |
+        cat /etc/hosts
+        ip link show
     - name: Install dependencies
       run: bundle install
     - name: Run Rubocop
