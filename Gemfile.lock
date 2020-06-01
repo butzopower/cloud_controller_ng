@@ -238,7 +238,7 @@ GEM
     ipaddress (0.8.3)
     jaro_winkler (1.5.4)
     json (2.3.0)
-    json-schema (2.8.0)
+    json-schema (2.8.1)
       addressable (>= 2.4)
     json_pure (2.1.0)
     jwt (2.2.1)
