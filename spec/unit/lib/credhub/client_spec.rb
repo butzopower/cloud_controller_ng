@@ -1,21 +1,22 @@
-require 'spec_helper'
+require 'webmock/rspec'
 require 'credhub/client'
 
 module Credhub
   RSpec.describe Client do
     let(:credhub_url) { 'https://credhub.example.com:8844' }
     let(:uaa_token_auth_header) { 'bearer token' }
-    let(:token_info) { instance_double(CF::UAA::TokenInfo, auth_header: uaa_token_auth_header) }
-    let(:uaa_client) { instance_double(VCAP::CloudController::UaaClient, token_info: token_info) }
+    let(:token_info) { double('CF::UAA::TokenInfo', auth_header: uaa_token_auth_header) }
+    let(:uaa_client) { double('VCAP::CloudController::UaaClient', token_info: token_info) }
+    let(:ca_cert_path) { 'spec/fixtures/certs/credhub_ca.crt' }
     let(:credhub_reference) { 'my-cred-reference' }
 
-    subject { Credhub::Client.new(credhub_url, uaa_client) }
+    subject { Credhub::Client.new(credhub_url, uaa_client, ca_cert_path) }
 
     describe '#client' do
       describe 'ssl_config' do
         it 'uses the configured credhub_ca.crt' do
           expect(subject.send(:client).ssl_config.cert_store_items).
-            to include(TestConfig.config_instance.get(:credhub_api, :ca_cert_path))
+            to include(ca_cert_path)
         end
       end
     end

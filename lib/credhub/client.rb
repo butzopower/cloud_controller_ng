@@ -1,8 +1,11 @@
+require 'steno'
+
 module Credhub
   class Client
-    def initialize(credhub_url, uaa_client)
+    def initialize(credhub_url, uaa_client, ca_cert_path)
       @credhub_url = credhub_url
       @uaa_client = uaa_client
+      @ca_cert_path = ca_cert_path
     end
 
     def get_credential_by_name(reference_name)
@@ -15,7 +18,7 @@ module Credhub
 
     private
 
-    attr_reader :credhub_url, :uaa_client
+    attr_reader :credhub_url, :uaa_client, :ca_cert_path
 
     def with_request_error_handling(&_block)
       response = yield
@@ -50,7 +53,7 @@ module Credhub
 
     def build_client
       client = HTTPClient.new(base_url: credhub_url)
-      client.ssl_config.set_trust_ca(VCAP::CloudController::Config.config.get(:credhub_api, :ca_cert_path))
+      client.ssl_config.set_trust_ca(ca_cert_path)
       client
     end
 
